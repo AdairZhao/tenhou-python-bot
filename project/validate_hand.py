@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 from functools import reduce
 
 from mahjong.constants import EAST, SOUTH, WEST, NORTH
-from mahjong.hand import FinishedHand
+from mahjong.hand.hand import FinishedHand
 from mahjong.tile import TilesConverter
 from tenhou.decoder import TenhouDecoder
 from utils.settings_handler import settings

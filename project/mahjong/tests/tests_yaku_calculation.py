@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from mahjong.hand import FinishedHand, HandDivider
+from mahjong.hand.hand import FinishedHand, HandDivider
 from mahjong.constants import EAST, SOUTH, WEST, NORTH, FIVE_RED_SOU
 from utils.tests import TestMixin
 from utils.settings_handler import settings
