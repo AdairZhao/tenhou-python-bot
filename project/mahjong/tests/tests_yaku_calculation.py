@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from mahjong.hand.hand import FinishedHand, HandDivider
+from mahjong.hand_calculation.divider import HandDivider
+from mahjong.hand_calculation.hand import FinishedHand
 from mahjong.constants import EAST, SOUTH, WEST, NORTH, FIVE_RED_SOU
 from utils.tests import TestMixin
 from utils.settings_handler import settings
@@ -247,8 +248,8 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result['fu'], 30)
         self.assertEqual(result['han'], 4)
 
-        # if we can't ad pinfu to the hand hand
-        # we can add 2 fu to make hand more expensive
+        # if we can't ad pinfu to the hand_calculation hand_calculation
+        # we can add 2 fu to make hand_calculation more expensive
         tiles = self._string_to_136_array(sou='678', man='11', pin='123345', honors='666')
         win_tile = self._string_to_136_tile(pin='3')
         result = hand.estimate_hand_value(tiles, win_tile, is_tsumo=True)
@@ -429,7 +430,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result['fu'], 30)
         self.assertEqual(len(result['hand_yaku']), 1)
 
-        # with open hand tsumo not giving yaku
+        # with open hand_calculation tsumo not giving yaku
         open_sets = [self._string_to_open_34_set(sou='123')]
         result = hand.estimate_hand_value(tiles, win_tile, is_tsumo=True, open_sets=open_sets)
         self.assertNotEqual(result['error'], None)
@@ -648,7 +649,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
         self.assertEqual(result['fu'], 30)
         self.assertEqual(len(result['hand_yaku']), 1)
 
-        # open hand
+        # open hand_calculation
         tiles = self._string_to_136_array(sou='12399', man='123456', pin='456')
         win_tile = self._string_to_136_tile(sou='1')
         open_sets = [self._string_to_open_34_set(sou='123')]
@@ -1181,7 +1182,7 @@ class YakuCalculationTestCase(unittest.TestCase, TestMixin):
     def test_dora_in_hand(self):
         hand = FinishedHand()
 
-        # hand without yaku, but with dora should be consider as invalid
+        # hand_calculation without yaku, but with dora should be consider as invalid
         tiles = self._string_to_136_array(sou='345678', man='456789', honors='55')
         win_tile = self._string_to_136_tile(sou='5')
         dora_indicators = [self._string_to_136_tile(sou='5')]

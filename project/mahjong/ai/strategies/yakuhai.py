@@ -8,7 +8,7 @@ class YakuhaiStrategy(BaseStrategy):
 
     def should_activate_strategy(self):
         """
-        We can go for yakuhai strategy if we have at least one yakuhai pair in the hand
+        We can go for yakuhai strategy if we have at least one yakuhai pair in the hand_calculation
         :return: boolean
         """
         result = super(YakuhaiStrategy, self).should_activate_strategy()
@@ -19,7 +19,7 @@ class YakuhaiStrategy(BaseStrategy):
         valued_pairs = [x for x in self.player.ai.valued_honors if tiles_34[x] >= 2]
 
         for pair in valued_pairs:
-            # we have valued pair in the hand and there is enough tiles
+            # we have valued pair in the hand_calculation and there is enough tiles
             # in the wall
             if self.player.total_tiles(pair, tiles_34) < 4:
                 return True
@@ -41,7 +41,7 @@ class YakuhaiStrategy(BaseStrategy):
         tiles_34 = TilesConverter.to_34_array(self.player.tiles)
         valued_pairs = [x for x in self.player.ai.valued_honors if tiles_34[x] == 2]
 
-        # when we trying to open hand with tempai state, we need to chose a valued pair waiting
+        # when we trying to open hand_calculation with tempai state, we need to chose a valued pair waiting
         if shanten == 0 and valued_pairs and for_open_hand and tile_for_open_hand not in valued_pairs:
             valued_pair = valued_pairs[0]
 
@@ -53,7 +53,7 @@ class YakuhaiStrategy(BaseStrategy):
 
         if self.player.is_open_hand:
             has_yakuhai_pon = any([self._is_yakuhai_pon(meld) for meld in self.player.melds])
-            # we opened our hand for atodzuke
+            # we opened our hand_calculation for atodzuke
             if not has_yakuhai_pon:
                 for item in outs_results:
                     for valued_pair in valued_pairs:
@@ -67,7 +67,7 @@ class YakuhaiStrategy(BaseStrategy):
                                                                       tile_for_open_hand)
 
     def meld_had_to_be_called(self, tile):
-        # for closed hand we don't need to open hand with special conditions
+        # for closed hand_calculation we don't need to open hand_calculation with special conditions
         if not self.player.is_open_hand:
             return False
 
@@ -77,16 +77,16 @@ class YakuhaiStrategy(BaseStrategy):
 
         for meld in self.player.melds:
             # for big shanten number we don't need to check already opened pon set,
-            # because it will improve pur hand anyway
+            # because it will improve pur hand_calculation anyway
             if self.player.ai.previous_shanten >= 1:
                 break
 
             # we have already opened yakuhai pon
-            # so we don't need to open hand without shanten improvement
+            # so we don't need to open hand_calculation without shanten improvement
             if self._is_yakuhai_pon(meld):
                 return False
 
-        # open hand for valued pon
+        # open hand_calculation for valued pon
         for valued_pair in valued_pairs:
             if valued_pair == tile:
                 return True

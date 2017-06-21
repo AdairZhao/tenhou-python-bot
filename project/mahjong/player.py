@@ -192,7 +192,7 @@ class Player(PlayerInterface):
 
     def total_tiles(self, tile, tiles_34):
         """
-        Return sum of all tiles (discarded + from melds + our hand)
+        Return sum of all tiles (discarded + from melds + our hand_calculation)
         :param tile: 34 tile format
         :param tiles_34: cached list of tiles (to not build it for each iteration)
         :return: int
@@ -202,14 +202,14 @@ class Player(PlayerInterface):
     def enemy_called_riichi(self):
         """
         After enemy riichi we had to check will we fold or not
-        it is affect open hand decision
+        it is affect open hand_calculation decision
         :return:
         """
         if self.ai.defence.should_go_to_defence_mode():
             self.ai.in_defence = True
 
     def add_called_meld(self, meld: Meld):
-        # we had to remove tile from the hand for the kan set
+        # we had to remove tile from the hand_calculation for the kan set
         if meld.type == Meld.KAN or meld.type == Meld.CHANKAN and meld.called_tile in self.tiles:
             self.tiles.remove(meld.called_tile)
 

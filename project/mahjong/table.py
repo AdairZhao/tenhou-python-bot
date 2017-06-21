@@ -59,12 +59,12 @@ class Table(object):
 
         # 136 - total count of tiles
         # 14 - tiles in dead wall
-        # 13 - tiles in each player hand
+        # 13 - tiles in each player hand_calculation
         self.count_of_remaining_tiles = 136 - 14 - self.count_of_players * 13
 
     def add_called_meld(self, player_seat, meld):
         # when opponent called meld it is means
-        # that he discards tile from hand, not from wall
+        # that he discards tile from hand_calculation, not from wall
         self.count_of_remaining_tiles += 1
 
         # we will decrease count of remaining tiles after called kan
@@ -98,7 +98,7 @@ class Table(object):
         """
         :param player_seat:
         :param tile: 136 format tile
-        :param is_tsumogiri: was tile discarded from hand or not
+        :param is_tsumogiri: was tile discarded from hand_calculation or not
         """
         self.count_of_remaining_tiles -= 1
 

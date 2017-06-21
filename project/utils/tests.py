@@ -1,4 +1,4 @@
-from mahjong.hand.hand import HandDivider
+from mahjong.hand_calculation.divider import HandDivider
 from mahjong.meld import Meld
 from mahjong.tile import TilesConverter
 

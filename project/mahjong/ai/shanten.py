@@ -35,7 +35,7 @@ class Shanten(object):
         if count_of_tiles > 14:
             return -2
 
-        # With open hand we need to remove open sets from hand and replace them with isolated pon sets
+        # With open hand_calculation we need to remove open sets from hand_calculation and replace them with isolated pon sets
         # it will allow to calculate count of shanten correctly
         if open_sets_34:
             isolated_tiles = find_isolated_tile_indices(tiles_34)

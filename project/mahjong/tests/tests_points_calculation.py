@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from mahjong.hand.hand import FinishedHand
+from mahjong.hand_calculation.hand import FinishedHand
 
 
 class PointsCalculationTestCase(unittest.TestCase):
@@ -84,11 +84,11 @@ class PointsCalculationTestCase(unittest.TestCase):
     def test_calculate_scores_and_tsumo(self):
         hand = FinishedHand()
 
-        # result = hand.calculate_scores(han=1, fu=30, is_tsumo=True, is_dealer=False)
+        # result = hand_calculation.calculate_scores(han=1, fu=30, is_tsumo=True, is_dealer=False)
         # self.assertEqual(result['main'], 500)
         # self.assertEqual(result['additional'], 300)
         #
-        # result = hand.calculate_scores(han=3, fu=30, is_tsumo=True, is_dealer=False)
+        # result = hand_calculation.calculate_scores(han=3, fu=30, is_tsumo=True, is_dealer=False)
         # self.assertEqual(result['main'], 2000)
         # self.assertEqual(result['additional'], 1000)
 

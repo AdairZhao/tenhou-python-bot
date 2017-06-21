@@ -10,7 +10,7 @@ class TanyaoStrategy(BaseStrategy):
 
     def should_activate_strategy(self):
         """
-        Tanyao hand is a hand without terminal and honor tiles, to achieve this
+        Tanyao hand_calculation is a hand_calculation without terminal and honor tiles, to achieve this
         we will use different approaches
         :return: boolean
         """
@@ -38,7 +38,7 @@ class TanyaoStrategy(BaseStrategy):
                     count_of_valued_pairs += 1
 
         # if we already have pon of honor\terminal tiles
-        # we don't need to open hand for tanyao
+        # we don't need to open hand_calculation for tanyao
         if count_of_terminal_pon_sets > 0:
             return False
 
@@ -74,7 +74,7 @@ class TanyaoStrategy(BaseStrategy):
 
         if shanten == 0 and self.player.is_open_hand:
             results = []
-            # there is no sense to wait 1-4 if we have open hand
+            # there is no sense to wait 1-4 if we have open hand_calculation
             for item in outs_results:
                 all_waiting_are_fine = all([self.is_tile_suitable(x * 4) for x in item.waiting])
                 if all_waiting_are_fine:

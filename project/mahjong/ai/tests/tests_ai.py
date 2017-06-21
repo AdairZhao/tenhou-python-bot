@@ -56,7 +56,7 @@ class AITestCase(unittest.TestCase, TestMixin):
 
     def test_chose_right_set_to_open_hand(self):
         """
-        Different test cases to open hand and chose correct set to open hand.
+        Different test cases to open hand_calculation and chose correct set to open hand_calculation.
         Based on real examples of incorrect opened hands
         """
         table = Table()
@@ -95,7 +95,7 @@ class AITestCase(unittest.TestCase, TestMixin):
 
     def test_not_open_hand_for_not_needed_set(self):
         """
-        We don't need to open hand if it is not improve the hand.
+        We don't need to open hand_calculation if it is not improve the hand_calculation.
         It was a bug related to it
         """
         table = Table()
@@ -132,7 +132,7 @@ class AITestCase(unittest.TestCase, TestMixin):
         player.init_hand(tiles)
         self.assertEqual(player.ai.current_strategy.type, BaseStrategy.TANYAO)
 
-        # for already opened hand we don't need to give up on selected strategy
+        # for already opened hand_calculation we don't need to give up on selected strategy
         meld = Meld()
         meld.tiles = [1, 2, 3]
         player.add_called_meld(meld)
@@ -276,13 +276,13 @@ class AITestCase(unittest.TestCase, TestMixin):
         player.draw_tile(self._string_to_136_tile(pin='9'))
         player.discard_tile()
 
-        # our hand is closed, we don't need to call opened kan here
+        # our hand_calculation is closed, we don't need to call opened kan here
         tile = self._string_to_136_tile(sou='1')
         self.assertEqual(player.can_call_kan(tile, True), None)
 
         player.add_called_meld(self._make_meld(Meld.PON, self._string_to_136_array(honors='111')))
 
-        # our hand is open, but it is not tempai
+        # our hand_calculation is open, but it is not tempai
         # we don't need to open kan here
         tile = self._string_to_136_tile(sou='1')
         self.assertEqual(player.can_call_kan(tile, True), None)
@@ -298,7 +298,7 @@ class AITestCase(unittest.TestCase, TestMixin):
         player.draw_tile(self._string_to_136_tile(pin='9'))
         player.discard_tile()
 
-        # our hand is open, in tempai and with a good wait
+        # our hand_calculation is open, in tempai and with a good wait
         tile = self._string_to_136_tile(sou='1')
         self.assertEqual(player.can_call_kan(tile, True), Meld.KAN)
 

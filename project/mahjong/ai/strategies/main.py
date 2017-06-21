@@ -17,7 +17,7 @@ class BaseStrategy(object):
 
     player = None
     type = None
-    # number of shanten where we can start to open hand
+    # number of shanten where we can start to open hand_calculation
     min_shanten = 7
 
     def __init__(self, strategy_type, player):
@@ -29,9 +29,9 @@ class BaseStrategy(object):
 
     def should_activate_strategy(self):
         """
-        Based on player hand and table situation
+        Based on player hand_calculation and table situation
         we can determine should we use this strategy or not.
-        For now default rule for all strategies: don't open hand with 5+ pairs
+        For now default rule for all strategies: don't open hand_calculation with 5+ pairs
         :return: boolean
         """
         if self.player.is_open_hand:
@@ -44,7 +44,7 @@ class BaseStrategy(object):
 
     def is_tile_suitable(self, tile):
         """
-        Can tile be used for open hand strategy or not
+        Can tile be used for open hand_calculation strategy or not
         :param tile: in 136 tiles format
         :return: boolean
         """
@@ -88,7 +88,7 @@ class BaseStrategy(object):
 
         closed_hand = self.player.closed_hand[:]
 
-        # we can't open hand anymore
+        # we can't open hand_calculation anymore
         if len(closed_hand) == 1:
             return None, None
 
@@ -162,7 +162,7 @@ class BaseStrategy(object):
         best_meld_34 = self._find_best_meld_to_open(possible_melds, new_tiles)
         if best_meld_34:
             # we need to calculate count of shanten with supposed meld
-            # to prevent bad hand openings
+            # to prevent bad hand_calculation openings
             melds = self.player.open_hand_34_tiles + [best_meld_34]
             outs_results, shanten = self.player.ai.calculate_outs(new_tiles, closed_hand, melds)
 
@@ -170,11 +170,11 @@ class BaseStrategy(object):
             if shanten > self.min_shanten:
                 return None, None
 
-            # we can't improve hand, so we don't need to open it
+            # we can't improve hand_calculation, so we don't need to open it
             if not outs_results:
                 return None, None
 
-            # sometimes we had to call tile, even if it will not improve our hand
+            # sometimes we had to call tile, even if it will not improve our hand_calculation
             # otherwise we can call only with improvements of shanten
             if not self.meld_had_to_be_called(tile) and shanten >= self.player.ai.previous_shanten:
                 return None, None
@@ -198,13 +198,13 @@ class BaseStrategy(object):
             meld.type = meld_type
             meld.tiles = sorted(tiles)
 
-            # we had to be sure that all our discard results exists in the closed hand
+            # we had to be sure that all our discard results exists in the closed hand_calculation
             filtered_results = []
             for result in outs_results:
                 if result.find_tile_in_hand(closed_hand):
                     filtered_results.append(result)
 
-            # we can't discard anything, so let's not open our hand
+            # we can't discard anything, so let's not open our hand_calculation
             if not filtered_results:
                 return None, None
 
@@ -233,8 +233,8 @@ class BaseStrategy(object):
             return possible_melds[0]
 
         # We will replace possible set with one completed pon set
-        # and we will calculate remaining shanten in the hand
-        # and chose the hand with min shanten count
+        # and we will calculate remaining shanten in the hand_calculation
+        # and chose the hand_calculation with min shanten count
         completed_hand_34 = TilesConverter.to_34_array(completed_hand)
 
         results = []

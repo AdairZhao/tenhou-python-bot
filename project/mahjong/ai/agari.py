@@ -16,7 +16,7 @@ class Agari(object):
         # we will modify them later, so we need to use a copy
         tiles = copy.deepcopy(tiles)
 
-        # With open hand we need to remove open sets from hand and replace them with isolated pon sets
+        # With open hand_calculation we need to remove open sets from hand_calculation and replace them with isolated pon sets
         # it will allow to determine agari state correctly
         if melds:
             isolated_tiles = find_isolated_tile_indices(tiles)

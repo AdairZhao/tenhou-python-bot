@@ -57,7 +57,7 @@ class DefenceTestCase(unittest.TestCase, TestMixin):
 
     def test_should_go_for_defence_and_bad_hand(self):
         """
-        When we have 13 tiles in hand and someone declared a riichi
+        When we have 13 tiles in hand_calculation and someone declared a riichi
         """
         table = Table()
 
@@ -71,12 +71,12 @@ class DefenceTestCase(unittest.TestCase, TestMixin):
 
         table.add_called_riichi(3)
 
-        # our hand is pretty bad, there is no sense to push it against riichi
+        # our hand_calculation is pretty bad, there is no sense to push it against riichi
         self.assertEqual(table.player.ai.defence.should_go_to_defence_mode(), True)
 
     def test_should_go_for_defence_and_good_hand(self):
         """
-        When we have 13 tiles in hand and someone declared a riichi
+        When we have 13 tiles in hand_calculation and someone declared a riichi
         """
         table = Table()
 
@@ -90,13 +90,13 @@ class DefenceTestCase(unittest.TestCase, TestMixin):
 
         table.add_called_riichi(3)
 
-        # our hand is in tempai, but it is really cheap
+        # our hand_calculation is in tempai, but it is really cheap
         self.assertEqual(table.player.ai.defence.should_go_to_defence_mode(), True)
 
         table.add_dora_indicator(self._string_to_136_tile(man='4'))
         table.add_dora_indicator(self._string_to_136_tile(pin='3'))
 
-        # our hand in tempai, and it has a cost, so let's push it
+        # our hand_calculation in tempai, and it has a cost, so let's push it
         self.assertEqual(table.player.ai.defence.should_go_to_defence_mode(), False)
 
     def test_call_riichi_with_good_wait_against_other_player_riichi(self):
@@ -133,7 +133,7 @@ class DefenceTestCase(unittest.TestCase, TestMixin):
 
     def test_should_go_for_defence_and_good_hand_with_drawn_tile(self):
         """
-        When we have 14 tiles in hand and someone declared a riichi
+        When we have 14 tiles in hand_calculation and someone declared a riichi
         """
         table = Table()
 
@@ -241,7 +241,7 @@ class DefenceTestCase(unittest.TestCase, TestMixin):
 
         result = table.player.discard_tile()
 
-        # discard of 2s will do less damage to our hand shape than 7p discard
+        # discard of 2s will do less damage to our hand_calculation shape than 7p discard
         self.assertEqual(table.player.ai.in_defence, True)
         self.assertEqual(self._to_string([result]), '2s')
 

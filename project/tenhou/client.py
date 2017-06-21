@@ -320,7 +320,7 @@ class TenhouClient(Client):
                     # we had to do discard after this
                     if meld.who == 0:
                         if meld.type != Meld.KAN and meld.type != Meld.CHANKAN:
-                            logger.info('With hand: {}'.format(main_player.format_hand_for_print(meld_tile)))
+                            logger.info('With hand_calculation: {}'.format(main_player.format_hand_for_print(meld_tile)))
                             logger.info('Discard tile after called meld: {}'.format(
                                 TilesConverter.to_one_line_string([discard_option.tile_to_discard])))
 
@@ -339,7 +339,7 @@ class TenhouClient(Client):
                     tile = self.decoder.parse_tile(message)
 
                     # <e21/> - is tsumogiri
-                    # <E21/> - discard from the hand
+                    # <E21/> - discard from the hand_calculation
                     if_tsumogiri = message[1].islower()
                     player_sign = message.lower()[1]
                     if player_sign == 'e':
@@ -351,7 +351,7 @@ class TenhouClient(Client):
 
                     self.table.add_discarded_tile(player_seat, tile, if_tsumogiri)
 
-                    # open hand suggestions
+                    # open hand_calculation suggestions
                     if 't=' in message:
                         # for now I'm not sure about what sets was suggested to call with this numbers
                         # will find it out later
@@ -396,7 +396,7 @@ class TenhouClient(Client):
                                 tiles[0],
                                 tiles[1]
                             ))
-                        # this meld will not improve our hand
+                        # this meld will not improve our hand_calculation
                         else:
                             sleep(TenhouClient.SLEEP_BETWEEN_ACTIONS)
                             self._send_message('<N />')

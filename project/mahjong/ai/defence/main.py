@@ -37,11 +37,11 @@ class DefenceHandler(object):
         :return: true|false
         """
 
-        # we drew a tile, so we have 14 tiles in our hand
+        # we drew a tile, so we have 14 tiles in our hand_calculation
         if discard_candidate:
             shanten = discard_candidate.shanten
             waiting = discard_candidate.waiting
-        # we have 13 tiles in hand (this is not our turn)
+        # we have 13 tiles in hand_calculation (this is not our turn)
         else:
             shanten = self.player.ai.previous_shanten
             waiting = self.player.ai.waiting
@@ -52,30 +52,30 @@ class DefenceHandler(object):
 
         threatening_players = self._get_threatening_players()
 
-        # no one is threatening, so we can build our hand
+        # no one is threatening, so we can build our hand_calculation
         if len(threatening_players) == 0:
             return False
 
         if shanten == 1:
-            # TODO calculate all possible hand costs for 1-2 shanten
+            # TODO calculate all possible hand_calculation costs for 1-2 shanten
             dora_count = sum([plus_dora(x, self.table.dora_indicators) for x in self.player.tiles])
-            # we had 3+ dora in our almost done hand,
+            # we had 3+ dora in our almost done hand_calculation,
             # we can try to push it
             if dora_count >= 3:
                 return False
 
-        # our hand is not tempai, so better to fold it
+        # our hand_calculation is not tempai, so better to fold it
         if shanten != 0:
             return True
 
-        # we are in tempai, let's try to estimate hand value
+        # we are in tempai, let's try to estimate hand_calculation value
         hands_estimated_cost = []
         call_riichi = not self.player.is_open_hand
         for tile in waiting:
             # copy of tiles, because we are modifying a list
             tiles = self.player.tiles[:]
 
-            # special case, when we already have 14 tiles in the hand
+            # special case, when we already have 14 tiles in the hand_calculation
             if discard_candidate:
                 temp_tile = discard_candidate.find_tile_in_hand(self.player.closed_hand)
                 tiles.remove(temp_tile)
@@ -84,12 +84,12 @@ class DefenceHandler(object):
             if hand_result['error'] is None:
                 hands_estimated_cost.append(hand_result['cost']['main'])
 
-        # probably we are with opened hand without yaku, let's fold it
+        # probably we are with opened hand_calculation without yaku, let's fold it
         if not hands_estimated_cost:
             return True
 
         max_cost = max(hands_estimated_cost)
-        # our open hand in tempai, but it is cheap
+        # our open hand_calculation in tempai, but it is cheap
         # so we can fold it
         if self.player.is_open_hand and max_cost < 7000:
             return True
@@ -132,7 +132,7 @@ class DefenceHandler(object):
 
             if common_safe_tiles:
                 # it can be that safe tile will be mark as "almost safe",
-                # but we already have "safe" tile in our hand
+                # but we already have "safe" tile in our hand_calculation
                 validated_safe_tiles = common_safe_tiles
                 for tile in safe_tiles:
                     already_added_tile = [x for x in common_safe_tiles if x.value == tile.value]
@@ -158,7 +158,7 @@ class DefenceHandler(object):
             player_suji_tiles = self.suji.find_tiles_to_discard([player])
 
             # it can be that safe tile will be mark as "almost safe",
-            # but we already have "safe" tile in our hand
+            # but we already have "safe" tile in our hand_calculation
             validated_safe_tiles = player_safe_tiles
             for tile in safe_tiles:
                 already_added_tile = [x for x in player_safe_tiles if x.value == tile.value]

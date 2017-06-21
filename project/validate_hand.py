@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Load tenhou replay and validate tenhou hand score with our own system score
+Load tenhou replay and validate tenhou hand_calculation score with our own system score
 Input attribute is file name with tenhou.net log content.
 
 Validation working correctly only for phoenix replays, for kyu, first dan and second dan lobbys
@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 from functools import reduce
 
 from mahjong.constants import EAST, SOUTH, WEST, NORTH
-from mahjong.hand.hand import FinishedHand
+from mahjong.hand_calculation.hand import FinishedHand
 from mahjong.tile import TilesConverter
 from tenhou.decoder import TenhouDecoder
 from utils.settings_handler import settings
@@ -213,7 +213,7 @@ class TenhouLogParser(object):
                                                            dora_indicators=dora_indicators)
 
                 if result['error']:
-                    logger.error('Error with hand calculation: {}'.format(result['error']))
+                    logger.error('Error with hand_calculation calculation: {}'.format(result['error']))
                     calculated_cost = 0
                     success = False
                 else:

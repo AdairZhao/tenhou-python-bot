@@ -7,6 +7,7 @@ from functools import reduce
 
 from mahjong.ai.agari import Agari
 from mahjong import yaku
+from mahjong.hand_calculation.divider import HandDivider
 from mahjong.tile import TilesConverter
 from mahjong.constants import EAST, SOUTH, WEST, NORTH, CHUN, HATSU, HAKU, TERMINAL_INDICES, HONOR_INDICES
 from mahjong.utils import is_chi, is_pon, is_pair, is_sou, is_pin, is_man, plus_dora, simplify
@@ -57,7 +58,7 @@ class FinishedHand(object):
         :param called_kan_indices: array of tiles in 136-tile format
         :param player_wind: index of player wind
         :param round_wind: index of round wind
-        :return: The dictionary with hand cost or error response
+        :return: The dictionary with hand_calculation cost or error response
 
         {"cost": {'main': 1000, 'additional': 0}, "han": 1, "fu": 30, "error": None, "hand_yaku": []}
         {"cost": None, "han": 0, "fu": 0, "error": "Hand is not valid", "hand_yaku": []}
@@ -97,15 +98,15 @@ class FinishedHand(object):
             return return_response()
 
         if win_tile not in tiles:
-            error = "Win tile not in the hand"
+            error = "Win tile not in the hand_calculation"
             return return_response()
 
         if is_riichi and is_open_hand:
-            error = "Riichi can't be declared with open hand"
+            error = "Riichi can't be declared with open hand_calculation"
             return return_response()
 
         if is_ippatsu and is_open_hand:
-            error = "Ippatsu can't be declared with open hand"
+            error = "Ippatsu can't be declared with open hand_calculation"
             return return_response()
 
         if is_ippatsu and not is_riichi and not is_daburu_riichi:
@@ -146,7 +147,7 @@ class FinishedHand(object):
 
             if additional_fu == 0 and len(chi_sets) == 4:
                 """
-                - A hand without pon and kan sets, so it should contains all sequences and a pair
+                - A hand_calculation without pon and kan sets, so it should contains all sequences and a pair
                 - The pair should be not valued
                 - The waiting must be an open wait (on 2 different tiles)
                 - Hand should be closed
@@ -172,7 +173,7 @@ class FinishedHand(object):
                 hand_yaku.append(yaku.pinfu)
 
             is_chitoitsu = self.is_chitoitsu(hand)
-            # let's skip hand that looks like chitoitsu, but it contains open sets
+            # let's skip hand_calculation that looks like chitoitsu, but it contains open sets
             if is_chitoitsu and is_open_hand:
                 continue
 
@@ -231,7 +232,7 @@ class FinishedHand(object):
             if self.is_chinroto(hand):
                 hand_yaku.append(yaku.chinroto)
 
-            # small optimization, try to detect yaku with chi required sets only if we have chi sets in hand
+            # small optimization, try to detect yaku with chi required sets only if we have chi sets in hand_calculation
             if len(chi_sets):
                 if self.is_chanta(hand):
                     hand_yaku.append(yaku.chanta)
@@ -251,7 +252,7 @@ class FinishedHand(object):
                 if self.is_sanshoku(hand):
                     hand_yaku.append(yaku.sanshoku)
 
-            # small optimization, try to detect yaku with pon required sets only if we have pon sets in hand
+            # small optimization, try to detect yaku with pon required sets only if we have pon sets in hand_calculation
             if len(pon_sets):
                 if self.is_toitoi(hand):
                     hand_yaku.append(yaku.toitoi)
@@ -358,7 +359,7 @@ class FinishedHand(object):
                 cost = None
             # else:
 
-            # we can add dora han only if we have other yaku in hand
+            # we can add dora han only if we have other yaku in hand_calculation
             # and if we don't have yakuman
             if not yakuman_list:
                 tiles_for_dora = tiles + kan_indices_136
@@ -393,7 +394,7 @@ class FinishedHand(object):
             }
             calculated_hands.append(calculated_hand)
 
-        # exception hand
+        # exception hand_calculation
         if not is_open_hand and self.is_kokushi(tiles_34):
             if tiles_34[win_tile // 4] == 2:
                 han = yaku.daburu_kokushi.han['closed']
@@ -409,7 +410,7 @@ class FinishedHand(object):
                 'fu': fu
             })
 
-        # let's use cost for most expensive hand
+        # let's use cost for most expensive hand_calculation
         calculated_hands = sorted(calculated_hands, key=lambda x: (x['han'], x['fu']), reverse=True)
 
         calculated_hand = calculated_hands[0]
@@ -423,7 +424,7 @@ class FinishedHand(object):
 
     def calculate_scores(self, han, fu, is_tsumo, is_dealer):
         """
-        Calculate how much scores cost a hand with given han and fu
+        Calculate how much scores cost a hand_calculation with given han and fu
         :param han:
         :param fu:
         :param is_tsumo:
@@ -484,7 +485,7 @@ class FinishedHand(object):
     def calculate_additional_fu(self, win_tile, hand, is_tsumo, player_wind, round_wind, open_sets, called_kan_indices):
         """
         :param win_tile: "136 format" tile
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :param player_wind:
         :param round_wind:
         :param open_sets: array of array with 34 tiles format
@@ -587,7 +588,7 @@ class FinishedHand(object):
     def is_chitoitsu(self, hand):
         """
         Hand contains only pairs
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
         return len(hand) == 7
@@ -595,7 +596,7 @@ class FinishedHand(object):
     def is_tanyao(self, hand):
         """
         Hand without 1, 9, dragons and winds
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
         indices = reduce(lambda z, y: z + y, hand)
@@ -605,7 +606,7 @@ class FinishedHand(object):
     def is_iipeiko(self, hand):
         """
         Hand with two identical chi
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
         chi_sets = [i for i in hand if is_chi(i)]
@@ -623,8 +624,8 @@ class FinishedHand(object):
 
     def is_ryanpeiko(self, hand):
         """
-        The hand contains two different Iipeikou’s
-        :param hand: list of hand's sets
+        The hand_calculation contains two different Iipeikou’s
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
         chi_sets = [i for i in hand if is_chi(i)]
@@ -640,8 +641,8 @@ class FinishedHand(object):
 
     def is_toitoi(self, hand):
         """
-        The hand consists of all pon sets (and of course a pair), no sequences.
-        :param hand: list of hand's sets
+        The hand_calculation consists of all pon sets (and of course a pair), no sequences.
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
         count_of_pon = len([i for i in hand if is_pon(i)])
@@ -649,8 +650,8 @@ class FinishedHand(object):
 
     def is_sankantsu(self, hand, called_kan_indices):
         """
-        The hand with three kan sets
-        :param hand: list of hand's sets
+        The hand_calculation with three kan sets
+        :param hand: list of hand_calculation's sets
         :param called_kan_indices: array of 34 tiles format
         :return: true|false
         """
@@ -668,7 +669,7 @@ class FinishedHand(object):
     def is_honroto(self, hand):
         """
         All tiles are terminals or honours
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
         indices = reduce(lambda z, y: z + y, hand)
@@ -679,7 +680,7 @@ class FinishedHand(object):
         """
         Three closed pon sets, the other sets need not to be closed
         :param win_tile: 136 tiles format
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :param open_sets: list of open sets
         :param is_tsumo:
         :return: true|false
@@ -706,7 +707,7 @@ class FinishedHand(object):
     def is_shosangen(self, hand):
         """
         Hand with two dragon pon sets and one dragon pair
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
         dragons = [CHUN, HAKU, HATSU]
@@ -722,7 +723,7 @@ class FinishedHand(object):
         """
         Every set must have at least one terminal or honour tile, and the pair must be of
         a terminal or honour tile. Must contain at least one sequence (123 or 789).
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
 
@@ -754,7 +755,7 @@ class FinishedHand(object):
         """
         Every set must have at least one terminal, and the pair must be of
         a terminal tile. Must contain at least one sequence (123 or 789).
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
 
@@ -781,7 +782,7 @@ class FinishedHand(object):
     def is_ittsu(self, hand):
         """
         Three sets of same suit: 1-2-3, 4-5-6, 7-8-9
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
 
@@ -822,7 +823,7 @@ class FinishedHand(object):
     def is_sanshoku(self, hand):
         """
         The same chi in three suits
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
         chi_sets = [i for i in hand if is_chi(i)]
@@ -854,7 +855,7 @@ class FinishedHand(object):
     def is_sanshoku_douko(self, hand):
         """
         Three pon sets consisting of the same numbers in all three suits
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
         pon_sets = [i for i in hand if is_pon(i)]
@@ -885,8 +886,8 @@ class FinishedHand(object):
 
     def is_honitsu(self, hand):
         """
-        The hand contains tiles from a single suit plus honours.
-        :param hand: list of hand's sets
+        The hand_calculation contains tiles from a single suit plus honours.
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
         honor_sets = 0
@@ -911,8 +912,8 @@ class FinishedHand(object):
 
     def is_chinitsu(self, hand):
         """
-        The hand contains tiles from a single suit
-        :param hand: list of hand's sets
+        The hand_calculation contains tiles from a single suit
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
         honor_sets = 0
@@ -938,7 +939,7 @@ class FinishedHand(object):
     def is_haku(self, hand):
         """
         Pon of white dragons
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
         return len([x for x in hand if is_pon(x) and x[0] == HAKU]) == 1
@@ -946,7 +947,7 @@ class FinishedHand(object):
     def is_hatsu(self, hand):
         """
         Pon of green dragons
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
         return len([x for x in hand if is_pon(x) and x[0] == HATSU]) == 1
@@ -954,7 +955,7 @@ class FinishedHand(object):
     def is_chun(self, hand):
         """
         Pon of red dragons
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
         return len([x for x in hand if is_pon(x) and x[0] == CHUN]) == 1
@@ -962,7 +963,7 @@ class FinishedHand(object):
     def is_east(self, hand, player_wind, round_wind):
         """
         Pon of east winds
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :param player_wind: index of player wind
         :param round_wind: index of round wind
         :return: true|false
@@ -979,7 +980,7 @@ class FinishedHand(object):
     def is_south(self, hand, player_wind, round_wind):
         """
         Pon of south winds
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :param player_wind: index of player wind
         :param round_wind: index of round wind
         :return: true|false
@@ -996,7 +997,7 @@ class FinishedHand(object):
     def is_west(self, hand, player_wind, round_wind):
         """
         Pon of west winds
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :param player_wind: index of player wind
         :param round_wind: index of round wind
         :return: true|false
@@ -1013,7 +1014,7 @@ class FinishedHand(object):
     def is_north(self, hand, player_wind, round_wind):
         """
         Pon of north winds
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :param player_wind: index of player wind
         :param round_wind: index of round wind
         :return: true|false
@@ -1029,8 +1030,8 @@ class FinishedHand(object):
 
     def is_daisangen(self, hand):
         """
-        The hand contains three sets of dragons
-        :param hand: list of hand's sets
+        The hand_calculation contains three sets of dragons
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
         count_of_dragon_pon_sets = 0
@@ -1041,8 +1042,8 @@ class FinishedHand(object):
 
     def is_shosuushi(self, hand):
         """
-        The hand contains three sets of winds and a pair of the remaining wind.
-        :param hand: list of hand's sets
+        The hand_calculation contains three sets of winds and a pair of the remaining wind.
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
         pon_sets = [x for x in hand if is_pon(x)]
@@ -1063,8 +1064,8 @@ class FinishedHand(object):
 
     def is_daisuushi(self, hand):
         """
-        The hand contains four sets of winds
-        :param hand: list of hand's sets
+        The hand_calculation contains four sets of winds
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
         pon_sets = [x for x in hand if is_pon(x)]
@@ -1082,7 +1083,7 @@ class FinishedHand(object):
     def is_tsuisou(self, hand):
         """
         Hand composed entirely of honour tiles.
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
         indices = reduce(lambda z, y: z + y, hand)
@@ -1091,7 +1092,7 @@ class FinishedHand(object):
     def is_chinroto(self, hand):
         """
         Hand composed entirely of terminal tiles.
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
         indices = reduce(lambda z, y: z + y, hand)
@@ -1099,8 +1100,8 @@ class FinishedHand(object):
 
     def is_kokushi(self, tiles_34):
         """
-        A hand composed of one of each of the terminals and honour tiles plus
-        any tile that matches anything else in the hand.
+        A hand_calculation composed of one of each of the terminals and honour tiles plus
+        any tile that matches anything else in the hand_calculation.
         :param tiles_34:
         :return: true|false
         """
@@ -1112,7 +1113,7 @@ class FinishedHand(object):
     def is_ryuisou(self, hand):
         """
         Hand composed entirely of green tiles. Green tiles are: green dragons and 2, 3, 4, 6 and 8 of sou.
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
         green_indices = [19, 20, 21, 23, 25, HATSU]
@@ -1123,7 +1124,7 @@ class FinishedHand(object):
         """
         Four closed pon sets
         :param win_tile: 136 tiles format
-        :param hand: list of hand's sets
+        :param hand: list of hand_calculation's sets
         :param is_tsumo:
         :return: true|false
         """
@@ -1141,8 +1142,8 @@ class FinishedHand(object):
 
     def is_chuuren_poutou(self, hand):
         """
-        The hand contains 1-1-1-2-3-4-5-6-7-8-9-9-9 of one suit, plus any other tile of the same suit.
-        :param hand: list of hand's sets
+        The hand_calculation contains 1-1-1-2-3-4-5-6-7-8-9-9-9 of one suit, plus any other tile of the same suit.
+        :param hand: list of hand_calculation's sets
         :return: true|false
         """
 
@@ -1193,8 +1194,8 @@ class FinishedHand(object):
 
     def is_suukantsu(self, hand, called_kan_indices):
         """
-        The hand with four kan sets
-        :param hand: list of hand's sets
+        The hand_calculation with four kan sets
+        :param hand: list of hand_calculation's sets
         :param called_kan_indices: array of 34 tiles format
         :return: true|false
         """
@@ -1208,225 +1209,3 @@ class FinishedHand(object):
                 count_of_kan_sets += 1
 
         return count_of_kan_sets == 4
-
-
-class HandDivider(object):
-
-    def divide_hand(self, tiles_34, open_sets, called_kan_indices):
-        """
-        Return a list of possible hands.
-        :param tiles_34:
-        :param open_sets: list of array with 34 arrays
-        :param called_kan_indices: list of array with 34 tiles
-        :return:
-        """
-
-        # small optimization, we can't have a pair in open part of the hand,
-        # so we don't need to try find pairs in open sets
-        open_tile_indices = open_sets and reduce(lambda x, y: x + y, open_sets) or []
-        closed_hand_tiles_34 = tiles_34[:]
-        for open_item in open_tile_indices:
-            closed_hand_tiles_34[open_item] -= 1
-
-        # let's remove closed kan sets from hand
-        closed_kan_sets = []
-        for kan_item in called_kan_indices:
-            open_tiles = len([x for x in open_tile_indices if x == kan_item])
-            if open_tiles != 3:
-                closed_hand_tiles_34[kan_item] -= 3
-                tiles_34[kan_item] -= 3
-                closed_kan_sets.append([kan_item] * 3)
-
-        if closed_kan_sets:
-            closed_kan_sets = [closed_kan_sets]
-
-        pair_indices = self.find_pairs(closed_hand_tiles_34)
-
-        # let's try to find all possible hand options
-        hands = []
-        for pair_index in pair_indices:
-            local_tiles_34 = tiles_34[:]
-
-            # we don't need to combine already open sets
-            for open_item in open_tile_indices:
-                local_tiles_34[open_item] -= 1
-
-            local_tiles_34[pair_index] -= 2
-
-            # 0 - 8 man tiles
-            man = self.find_valid_combinations(local_tiles_34, 0, 8)
-
-            # 9 - 17 pin tiles
-            pin = self.find_valid_combinations(local_tiles_34, 9, 17)
-
-            # 18 - 26 sou tiles
-            sou = self.find_valid_combinations(local_tiles_34, 18, 26)
-
-            honor = []
-            for x in HONOR_INDICES:
-                if local_tiles_34[x] == 3:
-                    honor.append([x] * 3)
-
-            if honor:
-                honor = [honor]
-
-            arrays = [[[pair_index] * 2]]
-            if sou:
-                arrays.append(sou)
-            if man:
-                arrays.append(man)
-            if pin:
-                arrays.append(pin)
-            if honor:
-                arrays.append(honor)
-            if open_sets:
-                for item in open_sets:
-                    arrays.append([item])
-            if closed_kan_sets:
-                arrays.append(closed_kan_sets)
-
-            # let's find all possible hand from our valid sets
-            for s in itertools.product(*arrays):
-                hand = []
-                for item in list(s):
-                    if isinstance(item[0], list):
-                        for x in item:
-                            hand.append(x)
-                    else:
-                        hand.append(item)
-
-                hand = sorted(hand, key=lambda a: a[0])
-                if len(hand) == 5:
-                    hands.append(hand)
-
-        # small optimization, let's remove hand duplicates
-        unique_hands = []
-        for hand in hands:
-            hand = sorted(hand, key=lambda x: (x[0], x[1]))
-            if hand not in unique_hands:
-                unique_hands.append(hand)
-
-        hands = unique_hands
-
-        if len(pair_indices) == 7:
-            hand = []
-            for index in pair_indices:
-                hand.append([index] * 2)
-            hands.append(hand)
-
-        return hands
-
-    def find_pairs(self, tiles_34, first_index=0, second_index=33):
-        """
-        Find all possible pairs in the hand and return their indices
-        :return: array of pair indices
-        """
-        pair_indices = []
-        for x in range(first_index, second_index + 1):
-            # ignore pon of honor tiles, because it can't be a part of pair
-            if x in HONOR_INDICES and tiles_34[x] != 2:
-                continue
-
-            if tiles_34[x] >= 2:
-                pair_indices.append(x)
-
-        return pair_indices
-
-    def find_valid_combinations(self, tiles_34, first_index, second_index, hand_not_completed=False):
-        """
-        Find and return all valid set combinations in given suit
-        :param tiles_34:
-        :param first_index:
-        :param second_index:
-        :param hand_not_completed: in that mode we can return just possible shi\pon sets
-        :return: list of valid combinations
-        """
-        indices = []
-        for x in range(first_index, second_index + 1):
-            if tiles_34[x] > 0:
-                indices.extend([x] * tiles_34[x])
-
-        if not indices:
-            return []
-
-        all_possible_combinations = list(itertools.permutations(indices, 3))
-
-        def is_valid_combination(possible_set):
-            if is_chi(possible_set):
-                return True
-
-            if is_pon(possible_set):
-                return True
-
-            return False
-
-        valid_combinations = []
-        for combination in all_possible_combinations:
-            if is_valid_combination(combination):
-                valid_combinations.append(list(combination))
-
-        if not valid_combinations:
-            return []
-
-        count_of_needed_combinations = int(len(indices) / 3)
-
-        # simple case, we have count of sets == count of tiles
-        if count_of_needed_combinations == len(valid_combinations) and \
-                reduce(lambda z, y: z + y, valid_combinations) == indices:
-            return [valid_combinations]
-
-        # filter and remove not possible pon sets
-        for item in valid_combinations:
-            if is_pon(item):
-                count_of_sets = 1
-                count_of_tiles = 0
-                while count_of_sets > count_of_tiles:
-                    count_of_tiles = len([x for x in indices if x == item[0]]) / 3
-                    count_of_sets = len([x for x in valid_combinations
-                                         if x[0] == item[0] and x[1] == item[1] and x[2] == item[2]])
-
-                    if count_of_sets > count_of_tiles:
-                        valid_combinations.remove(item)
-
-        # filter and remove not possible chi sets
-        for item in valid_combinations:
-            if is_chi(item):
-                count_of_sets = 5
-                # TODO calculate real count of possible sets
-                count_of_possible_sets = 4
-                while count_of_sets > count_of_possible_sets:
-                    count_of_sets = len([x for x in valid_combinations
-                                         if x[0] == item[0] and x[1] == item[1] and x[2] == item[2]])
-
-                    if count_of_sets > count_of_possible_sets:
-                        valid_combinations.remove(item)
-
-        # lit of chi\pon sets for not completed hand
-        if hand_not_completed:
-            return [valid_combinations]
-
-        # hard case - we can build a lot of sets from our tiles
-        # for example we have 123456 tiles and we can build sets:
-        # [1, 2, 3] [4, 5, 6] [2, 3, 4] [3, 4, 5]
-        # and only two of them valid in the same time [1, 2, 3] [4, 5, 6]
-
-        possible_combinations = set(itertools.permutations(
-            range(0, len(valid_combinations)), count_of_needed_combinations
-        ))
-
-        combinations_results = []
-        for combination in possible_combinations:
-            result = []
-            for item in combination:
-                result += valid_combinations[item]
-            result = sorted(result)
-
-            if result == indices:
-                results = []
-                for item in combination:
-                    results.append(valid_combinations[item])
-                results = sorted(results, key=lambda z: z[0])
-                if results not in combinations_results:
-                    combinations_results.append(results)
-
-        return combinations_results

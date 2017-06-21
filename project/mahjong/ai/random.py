@@ -5,7 +5,7 @@ from mahjong.ai.base import BaseAI
 
 class MainAI(BaseAI):
     """
-    AI that will discard random tile from the hand
+    AI that will discard random tile from the hand_calculation
     """
 
     version = 'random'

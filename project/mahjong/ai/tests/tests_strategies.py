@@ -30,7 +30,7 @@ class YakuhaiStrategyTestCase(unittest.TestCase, TestMixin):
         player.init_hand(tiles)
         self.assertEqual(strategy.should_activate_strategy(), True)
 
-        # with chitoitsu-like hand we don't need to go for yakuhai
+        # with chitoitsu-like hand_calculation we don't need to go for yakuhai
         tiles = self._string_to_136_array(sou='1235566', man='8899', honors='66')
         player.init_hand(tiles)
         self.assertEqual(strategy.should_activate_strategy(), False)
@@ -68,11 +68,11 @@ class YakuhaiStrategyTestCase(unittest.TestCase, TestMixin):
         tile = self._string_to_136_tile(honors='4')
         player.init_hand(tiles)
 
-        # we don't need to open hand with not our wind
+        # we don't need to open hand_calculation with not our wind
         meld, _ = player.try_to_call_meld(tile, False)
         self.assertEqual(meld, None)
 
-        # with dragon pair in hand let's open our hand
+        # with dragon pair in hand_calculation let's open our hand_calculation
         tiles = self._string_to_136_array(sou='1689', pin='2358', man='1', honors='4455')
         tile = self._string_to_136_tile(honors='4')
         player.init_hand(tiles)
@@ -116,7 +116,7 @@ class YakuhaiStrategyTestCase(unittest.TestCase, TestMixin):
 
     def test_force_yakuhai_pair_waiting_for_tempai_hand(self):
         """
-        If hand shanten = 1 don't open hand except the situation where is
+        If hand_calculation shanten = 1 don't open hand_calculation except the situation where is
         we have tempai on yakuhai tile after open set
         """
         table = Table()
@@ -125,7 +125,7 @@ class YakuhaiStrategyTestCase(unittest.TestCase, TestMixin):
         tiles = self._string_to_136_array(sou='123', pin='678', man='34468', honors='66')
         player.init_hand(tiles)
 
-        # we will not get tempai on yakuhai pair with this hand, so let's skip this call
+        # we will not get tempai on yakuhai pair with this hand_calculation, so let's skip this call
         tile = self._string_to_136_tile(man='5')
         meld, _ = player.try_to_call_meld(tile, False)
         self.assertEqual(meld, None)
@@ -140,7 +140,7 @@ class YakuhaiStrategyTestCase(unittest.TestCase, TestMixin):
         table = Table()
         player = table.player
 
-        # we can open hand in that case
+        # we can open hand_calculation in that case
         tiles = self._string_to_136_array(man='44556', sou='366789', honors='77')
         player.init_hand(tiles)
 
@@ -235,9 +235,9 @@ class YakuhaiStrategyTestCase(unittest.TestCase, TestMixin):
 
     def test_wrong_shanten_improvements_detection(self):
         """
-        With hand 2345s1p11z bot wanted to open set on 2s,
+        With hand_calculation 2345s1p11z bot wanted to open set on 2s,
         so after opened set we will get 25s1p11z
-        it is not correct logic, because we ruined our hand
+        it is not correct logic, because we ruined our hand_calculation
         :return:
         """
         table = Table()
@@ -275,13 +275,13 @@ class HonitsuStrategyTestCase(unittest.TestCase, TestMixin):
         player.init_hand(tiles)
         self.assertEqual(strategy.should_activate_strategy(), True)
 
-        # with hand without pairs we not should go for honitsu,
+        # with hand_calculation without pairs we not should go for honitsu,
         # because it is far away from tempai
         tiles = self._string_to_136_array(sou='12358', man='238', honors='12345')
         player.init_hand(tiles)
         self.assertEqual(strategy.should_activate_strategy(), False)
 
-        # with chitoitsu-like hand we don't need to go for honitsu
+        # with chitoitsu-like hand_calculation we don't need to go for honitsu
         tiles = self._string_to_136_array(pin='77', man='3355677899', sou='11')
         player.init_hand(tiles)
         self.assertEqual(strategy.should_activate_strategy(), False)
@@ -314,7 +314,7 @@ class HonitsuStrategyTestCase(unittest.TestCase, TestMixin):
         tiles = self._string_to_136_array(sou='112235589', man='24', honors='22')
         player.init_hand(tiles)
 
-        # we don't need to call meld even if it improves our hand,
+        # we don't need to call meld even if it improves our hand_calculation,
         # because we are collecting honitsu
         tile = self._string_to_136_tile(man='1')
         meld, _ = player.try_to_call_meld(tile, False)
@@ -518,7 +518,7 @@ class TanyaoStrategyTestCase(unittest.TestCase, TestMixin):
         meld, _ = player.try_to_call_meld(tile, False)
         self.assertEqual(meld, None)
 
-        # with 3 shanten we can open a hand
+        # with 3 shanten we can open a hand_calculation
         tiles = self._string_to_136_array(man='236', pin='378', sou='3488', honors='123')
         tile = self._string_to_136_tile(sou='2')
         player.init_hand(tiles)
@@ -570,7 +570,7 @@ class TanyaoStrategyTestCase(unittest.TestCase, TestMixin):
 
         tile = self._string_to_136_tile(sou='6')
         meld, _ = player.try_to_call_meld(tile, False)
-        # even if it looks like chitoitsu we can open hand and get tempai here
+        # even if it looks like chitoitsu we can open hand_calculation and get tempai here
         self.assertNotEqual(meld, None)
 
     def test_we_cant_win_with_this_hand(self):
@@ -583,7 +583,7 @@ class TanyaoStrategyTestCase(unittest.TestCase, TestMixin):
 
         table.player.draw_tile(self._string_to_136_tile(sou='1'))
         discard = table.player.discard_tile()
-        # but for already open hand we cant do tsumo
+        # but for already open hand_calculation we cant do tsumo
         # because we don't have a yaku here
         # so, let's do tsumogiri
         self.assertEqual(table.player.ai.previous_shanten, 0)
@@ -611,7 +611,7 @@ class TanyaoStrategyTestCase(unittest.TestCase, TestMixin):
         player.init_hand(tiles)
         player.draw_tile(self._string_to_136_tile(pin='2'))
 
-        # it is not a good idea to wait on 1-4, since we can't win on 1 with open hand
+        # it is not a good idea to wait on 1-4, since we can't win on 1 with open hand_calculation
         # so let's continue to wait on 4 only
         discard = player.discard_tile()
         self.assertEqual(self._to_string([discard]), '2p')

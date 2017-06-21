@@ -94,8 +94,8 @@ class TenhouLogReproducer(object):
                 table.add_called_meld(player_seat, meld)
 
                 if player_seat == 0:
-                    # we had to delete called tile from hand
-                    # to have correct tiles count in the hand
+                    # we had to delete called tile from hand_calculation
+                    # to have correct tiles count in the hand_calculation
                     if meld.type != Meld.KAN and meld.type != Meld.CHANKAN:
                         table.player.draw_tile(meld.called_tile)
 

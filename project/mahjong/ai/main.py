@@ -11,7 +11,8 @@ from mahjong.ai.strategies.main import BaseStrategy
 from mahjong.ai.strategies.tanyao import TanyaoStrategy
 from mahjong.ai.strategies.yakuhai import YakuhaiStrategy
 from mahjong.constants import HAKU, CHUN, HATSU, AKA_DORA_LIST
-from mahjong.hand.hand import HandDivider, FinishedHand
+from mahjong.hand_calculation.divider import HandDivider
+from mahjong.hand_calculation.hand import FinishedHand
 from mahjong.meld import Meld
 from mahjong.tile import TilesConverter
 from mahjong.utils import is_pair, is_pon
@@ -61,7 +62,7 @@ class MainAI(BaseAI):
 
         # bot think that there is a threat on the table
         # and better to fold
-        # if we can't find safe tiles, let's continue to build our hand
+        # if we can't find safe tiles, let's continue to build our hand_calculation
         if self.defence.should_go_to_defence_mode(selected_tile):
             if not self.in_defence:
                 logger.info('We decided to fold against other players')
@@ -154,7 +155,7 @@ class MainAI(BaseAI):
         return self.current_strategy.try_to_call_meld(tile, is_kamicha_discard)
 
     def determine_strategy(self):
-        # for already opened hand we don't need to give up on selected strategy
+        # for already opened hand_calculation we don't need to give up on selected strategy
         if self.player.is_open_hand and self.current_strategy:
             return False
 
@@ -180,7 +181,7 @@ class MainAI(BaseAI):
                 if old_strategy:
                     message += ' from {}'.format(old_strategy)
                 logger.debug(message)
-                logger.debug('With hand: {}'.format(TilesConverter.to_one_line_string(self.player.tiles)))
+                logger.debug('With hand_calculation: {}'.format(TilesConverter.to_one_line_string(self.player.tiles)))
 
         if not self.current_strategy and old_strategy:
             logger.debug('{} gave up on {}'.format(self.player.name, old_strategy))
@@ -195,7 +196,7 @@ class MainAI(BaseAI):
         def sorting(x):
             # - is important for x.tiles_count
             # in that case we will discard tile that will give for us more tiles
-            # to complete a hand
+            # to complete a hand_calculation
             return x.shanten, -x.tiles_count, x.valuation
 
         had_to_be_discarded_tiles = [x for x in results if x.had_to_be_discarded]
@@ -311,7 +312,7 @@ class MainAI(BaseAI):
             return None
 
         if open_kan:
-            # we don't want to start open our hand from called kan
+            # we don't want to start open our hand_calculation from called kan
             if not self.player.is_open_hand:
                 return None
 
@@ -341,11 +342,11 @@ class MainAI(BaseAI):
         if open_kan:
             count_of_needed_tiles = 3
 
-        # we have 3 tiles in our hand,
+        # we have 3 tiles in our hand_calculation,
         # so we can try to call closed meld
         if closed_hand_34[tile_34] == count_of_needed_tiles:
             if not open_kan:
-                # to correctly count shanten in the hand
+                # to correctly count shanten in the hand_calculation
                 # we had do subtract drown tile
                 tiles_34[tile_34] -= 1
 
@@ -355,7 +356,7 @@ class MainAI(BaseAI):
             melds += [[tile_34, tile_34, tile_34]]
             new_shanten = self.shanten.calculate_shanten(tiles_34, melds)
 
-            # called kan will not ruin our hand
+            # called kan will not ruin our hand_calculation
             if new_shanten <= previous_shanten:
                 return Meld.KAN
 

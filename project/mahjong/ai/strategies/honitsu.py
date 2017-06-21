@@ -41,8 +41,8 @@ class HonitsuStrategy(BaseStrategy):
         if count_of_ryanmens > 0 and not self.player.is_open_hand:
             return False
 
-        # we need to have prevalence of one suit and completed forms in the hand
-        # for now let's check only pairs in the hand
+        # we need to have prevalence of one suit and completed forms in the hand_calculation
+        # for now let's check only pairs in the hand_calculation
         # TODO check ryanmen forms as well and honor tiles count
         if suit['count'] + honor['count'] >= HonitsuStrategy.REQUIRED_TILES:
             self.chosen_suit = suit['function']

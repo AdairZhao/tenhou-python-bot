@@ -10,15 +10,15 @@ class DiscardOption(object):
 
     # in 34 tile format
     tile_to_discard = None
-    # array of tiles that will improve our hand
+    # array of tiles that will improve our hand_calculation
     waiting = None
-    # how much tiles will improve our hand
+    # how much tiles will improve our hand_calculation
     tiles_count = None
     # number of shanten for that tile
     shanten = None
     # sometimes we had to force tile to be discarded
     had_to_be_discarded = False
-    # special cases where we had to save tile in hand (usually for atodzuke opened hand)
+    # special cases where we had to save tile in hand_calculation (usually for atodzuke opened hand_calculation)
     had_to_be_saved = False
     # calculated tile value, for sorting
     valuation = None
@@ -45,20 +45,20 @@ class DiscardOption(object):
 
     def find_tile_in_hand(self, closed_hand):
         """
-        Find and return 136 tile in closed player hand
+        Find and return 136 tile in closed player hand_calculation
         """
 
         if settings.FIVE_REDS:
-            # special case, to keep aka dora in hand
+            # special case, to keep aka dora in hand_calculation
             if self.tile_to_discard in [4, 13, 22]:
                 aka_closed_hand = closed_hand[:]
                 while True:
                     tile = TilesConverter.find_34_tile_in_136_array(self.tile_to_discard, aka_closed_hand)
-                    # we have only aka dora in the hand
+                    # we have only aka dora in the hand_calculation
                     if not tile:
                         break
 
-                    # we found aka in the hand,
+                    # we found aka in the hand_calculation,
                     # let's try to search another five tile
                     # to keep aka dora
                     if tile in AKA_DORA_LIST:
@@ -73,7 +73,7 @@ class DiscardOption(object):
         value = 100
         honored_value = 20
 
-        # we don't need to keep honor tiles in almost completed hand
+        # we don't need to keep honor tiles in almost completed hand_calculation
         if shanten and shanten <= 2:
             honored_value = 0
 
